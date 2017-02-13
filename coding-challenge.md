@@ -4,7 +4,7 @@
 
 The challenge is to implement a slot machine (like the one in a casino).
 The application should be implemented in Java and make use of the Spring Framework and be runnable with Spring Boot. Use a RESTful interface to send and receive JSON formatted messages.
-Code your application with as much care and diligence as you would in daily business.
+Code your application with as much care and diligence as you would in daily business. For this challenge we already provided you with a skeleton application based on Maven (pom file), located in the source folder.
 
 ### Functional requirements
 
