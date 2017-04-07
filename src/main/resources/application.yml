@@ -1,0 +1,15 @@
+server:
+  port: 3000
+jwt:
+  header: Authorization
+  secret: abcdef
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+logging:
+  level:
+    org.springframework: ERROR
+fructa:
+  edge: 0.2

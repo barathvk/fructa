@@ -20,7 +20,7 @@ These are the rules of the game: A player tries his luck and pulls the lever of 
 
 4. Make sure the game works correctly.
 
-5. The game is played by calling a RESTful API. A graphical user interface is not required.
+5. The game is played by calling a RESTful API. A graphical id interface is not required.
 
 6. Make sure the application can be monitored from the outside and delivers some metrics.
 
