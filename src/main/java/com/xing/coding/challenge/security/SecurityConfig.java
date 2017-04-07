@@ -37,5 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .withUser("player2")
       .password("password")
       .roles("USER");
+    auth.inMemoryAuthentication()
+      .withUser("player2")
+      .password("password")
+      .roles("USER");
   }
 }

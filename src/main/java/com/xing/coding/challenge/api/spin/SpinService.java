@@ -3,27 +3,29 @@ package com.xing.coding.challenge.api.spin;
 import com.xing.coding.challenge.api.account.Trans;
 import com.xing.coding.challenge.api.account.TransactionRepository;
 import com.xing.coding.challenge.api.account.TransactionService;
+import com.xing.coding.challenge.metrics.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 @Service
-class SpinService {
-  @Value("${fructa.edge}")
-  private double edge;
+public class SpinService {
+  @Value("${fructa.prize}")
+  private int prize;
   @Autowired
   private TransactionRepository trepository;
   @Autowired
   private SpinRepository srepository;
   @Autowired
+  private Metrics metrics;
+  @Autowired
   private TransactionService tservice;
-  Spin spin(String userId) throws Exception {
+  public Spin spin(String userId) throws Exception {
     Random r = new Random();
-    Trans transIn = new Trans(userId, -1);
     Fruit[] fruits = new Fruit[Fruit.values().length];
     int balance = tservice.getBalance(userId);
     if (balance <= 0) {
@@ -34,20 +36,35 @@ class SpinService {
       Fruit chosen = Fruit.values()[chosenId];
       fruits[i] = chosen;
     }
+    return spin(userId, fruits);
+  }
+  private Spin spin(String userId, Fruit[] fruits) {
+    Trans transIn = new Trans(userId, -1);
     Boolean win = Arrays.stream(fruits).allMatch(f -> f == fruits[0]);
+    Trans transHouse = new Trans("house", 1);
     trepository.save(transIn);
+    trepository.save(transHouse);
     Trans transOut = null;
-    double e = this.edge;
     if (win) {
-      Double even = Math.pow(Fruit.values().length, Fruit.values().length - 1);
-      int winamt = ((Double)Math.floor(even * (1 - edge))).intValue();
-      transOut = new Trans(userId, winamt);
+      transOut = new Trans(userId, prize);
       trepository.save(transOut);
+      Trans transHouseOut = new Trans("house", -1 * prize);
+      trepository.save(transHouseOut);
     }
     List<Fruit> result = Arrays.asList(fruits);
-    balance = tservice.getBalance(userId);
+    int balance = tservice.getBalance(userId);
     Spin spin = new Spin(result, userId, win, transIn, transOut, balance);
     srepository.save(spin);
+    metrics.transactionCount.inc();
+    metrics.bankBalance.set(tservice.getBalance("bank"));
+    metrics.houseBalance.set(tservice.getBalance("house"));
+    metrics.userBalance.labels(userId).set(balance);
+    metrics.spinCounter.labels(userId, Boolean.toString(win)).inc();
+    try {
+      metrics.send();
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
     return spin;
   }
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-class Spin {
+public class Spin {
   @ElementCollection(targetClass = Fruit.class)
   @Enumerated(EnumType.STRING)
   private List<Fruit> result;

@@ -8,8 +8,6 @@ jwt:
     authentication:
       path: auth
       refresh: refresh
-logging:
-  level:
-    org.springframework: ERROR
 fructa:
-  edge: 0.2
+  prize: 8
+  gateway: "gateway.fructa.ga"
