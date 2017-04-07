@@ -16,7 +16,7 @@ public class TransactionService {
     List<Trans> trans = list(userId);
     return trans.stream().mapToInt(Trans::getAmount).sum();
   }
-  int requestMore(String userId) {
+  public int requestMore(String userId) {
     int bal = getBalance(userId);
     if (bal > 0) {
       return bal;
