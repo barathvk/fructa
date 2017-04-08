@@ -9,5 +9,5 @@ jwt:
       path: auth
       refresh: refresh
 fructa:
-  prize: 8
+  prize: 9
   gateway: "gateway.fructa.ga"

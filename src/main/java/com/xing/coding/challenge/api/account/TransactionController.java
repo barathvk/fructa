@@ -25,10 +25,4 @@ public class TransactionController {
     String user = auth.getPrincipal().toString();
     return service.getBalance(user);
   }
-  @RequestMapping("/more")
-  public int getMore() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String user = auth.getPrincipal().toString();
-    return service.requestMore(user);
-  }
 }

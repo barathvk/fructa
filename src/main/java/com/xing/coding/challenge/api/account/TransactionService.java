@@ -23,25 +23,6 @@ public class TransactionService {
     List<Trans> trans = list(userId);
     return trans.stream().mapToInt(Trans::getAmount).sum();
   }
-  public int requestMore(String userId) {
-    int bal = getBalance(userId);
-    if (bal > 0) {
-      return bal;
-    }
-    bal = getBalance(userId);
-    repository.save(new Trans(userId, 10));
-    repository.save(new Trans("bank", -10));
-    metrics.transactionCount.inc();
-    metrics.bankBalance.set(getBalance("bank"));
-    metrics.houseBalance.set(getBalance("house"));
-    metrics.userBalance.labels(userId).set(bal);
-    try {
-      metrics.send();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-    return bal;
-  }
   public TransactionService(TransactionRepository repository) {
     this.repository = repository;
   }

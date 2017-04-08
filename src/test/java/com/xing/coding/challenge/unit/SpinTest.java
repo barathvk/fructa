@@ -53,10 +53,6 @@ public class SpinTest {
   }
   private void simulateSpin() throws Exception {
     String user = "player" + (r.nextInt(3) + 1);
-    int bal = transservice.getBalance(user);
-    if (bal <= 0) {
-      transservice.requestMore(user);
-    }
     Spin spin = spinservice.spin(user);
     assertThat(spin.getUserId()).isNotNull();
     assertThat(spin.getTransIn()).isNotNull();

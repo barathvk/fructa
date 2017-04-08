@@ -27,10 +27,6 @@ public class SpinService {
   public Spin spin(String userId) throws Exception {
     Random r = new Random();
     Fruit[] fruits = new Fruit[Fruit.values().length];
-    int balance = tservice.getBalance(userId);
-    if (balance <= 0) {
-      throw new Exception("Balance is 0");
-    }
     for (int i = 0; i < Fruit.values().length; i++) {
       int chosenId = r.nextInt(Fruit.values().length);
       Fruit chosen = Fruit.values()[chosenId];
@@ -56,7 +52,6 @@ public class SpinService {
     Spin spin = new Spin(result, userId, win, transIn, transOut, balance);
     srepository.save(spin);
     metrics.transactionCount.inc();
-    metrics.bankBalance.set(tservice.getBalance("bank"));
     metrics.houseBalance.set(tservice.getBalance("house"));
     metrics.userBalance.labels(userId).set(balance);
     metrics.spinCounter.labels(userId, Boolean.toString(win)).inc();
