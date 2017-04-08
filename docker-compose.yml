@@ -21,6 +21,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=fructa
       - 'GF_SERVER_ROOT_URL=http://metrics.fructa.ga'
+      - GF_AUTH_ANONYMOUS_ENABLED=true
     image: 'grafana/grafana:latest'
     labels:
       - 'traefik.port=3000'
