@@ -1,61 +1,63 @@
-fructa-api:
-  image: 'lennonsaves/fructa:latest'
-  container_name: api
-  restart: always
-  container_name: api
-  labels:
-    - 'traefik.port=3000'
-gateway:
-  image: 'prom/pushgateway:latest'
-  restart: always
-  container_name: gateway
-  labels:
-    - 'traefik.port=9091'
-  ports:
-    - '9091:9091'
-grafana:
-  restart: always
-  container_name: metrics
-  environment:
-    - GF_SECURITY_ADMIN_PASSWORD=fructa
-    - 'GF_SERVER_ROOT_URL=http://metrics.fructa.ga'
-  image: 'grafana/grafana:latest'
-  labels:
-    - 'traefik.port=3000'
-  volumes:
-    - '/docker/grafana:/var/lib/grafana'
-prometheus:
-  image: 'prom/prometheus:latest'
-  container_name: prom
-  restart: always
-  labels:
-    - traefik.backend=prometheus
-    - traefik.port=9090
-  volumes:
-    - '/docker/prometheus/data:/prometheus'
-    - '/var/fructa/prometheus.yml:/etc/prometheus/prometheus.yml'
-tr-stats:
-  command: '-traefik.address=http://traefik:8080/health'
-  restart: always
-  image: 'quay.io/bakins/traefik-exporter:0.1.1'
-  labels:
-    - 'traefik.port=9000'
-traefik:
-  container_name: traefik
-  command: '--web --docker --docker.domain=fructa.ga --logLevel=DEBUG'
-  image: 'traefik:latest'
-  restart: always
-  labels:
-    - traefik.port=8080
-  ports:
-    - '80:80'
-  volumes:
-    - '/var/run/docker.sock:/var/run/docker.sock'
-    - '/dev/null:/traefik.toml'
-portainer:
-  image: portainer/portainer
-  container_name: portainer
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-  labels:
-    - traefik.port=9000
+version: '2'
+services:
+  fructa-api:
+    image: 'lennonsaves/fructa:latest'
+    container_name: api
+    restart: always
+    container_name: api
+    labels:
+      - 'traefik.port=3000'
+  gateway:
+    image: 'prom/pushgateway:latest'
+    restart: always
+    container_name: gateway
+    labels:
+      - 'traefik.port=9091'
+    ports:
+      - '9091:9091'
+  grafana:
+    restart: always
+    container_name: metrics
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=fructa
+      - 'GF_SERVER_ROOT_URL=http://metrics.fructa.ga'
+    image: 'grafana/grafana:latest'
+    labels:
+      - 'traefik.port=3000'
+    volumes:
+      - '/docker/grafana:/var/lib/grafana'
+  prometheus:
+    image: 'prom/prometheus:latest'
+    container_name: prom
+    restart: always
+    labels:
+      - traefik.backend=prometheus
+      - traefik.port=9090
+    volumes:
+      - '/docker/prometheus/data:/prometheus'
+      - '/var/fructa/prometheus.yml:/etc/prometheus/prometheus.yml'
+  tr-stats:
+    command: '-traefik.address=http://traefik:8080/health'
+    restart: always
+    image: 'quay.io/bakins/traefik-exporter:0.1.1'
+    labels:
+      - 'traefik.port=9000'
+  traefik:
+    container_name: traefik
+    command: '--web --docker --docker.domain=fructa.ga --logLevel=DEBUG'
+    image: 'traefik:latest'
+    restart: always
+    labels:
+      - traefik.port=8080
+    ports:
+      - '80:80'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/dev/null:/traefik.toml'
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.port=9000

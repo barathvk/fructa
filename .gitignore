@@ -2,4 +2,5 @@
 derby.log
 target/
 build/
-
+deploy_rsa
+deploy_rsa.pub
