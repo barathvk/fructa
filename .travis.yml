@@ -17,5 +17,5 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv -in deploy_rsa.enc -out deploy_rsa -d
   - echo -e "Host fructa.ga\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - eval "$(ssh-agent -s)"
-  - chmod 600 /tmp/deploy_rsa
-  - ssh-add /tmp/deploy_rsa
+  - chmod 600 deploy_rsa
+  - ssh-add deploy_rsa
