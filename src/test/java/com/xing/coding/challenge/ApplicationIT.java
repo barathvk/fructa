@@ -32,14 +32,14 @@ public class ApplicationIT {
   }
 	@Test
 	public void root() throws Exception {
-	  mock.perform(get("/api"))
+	  mock.perform(get("/"))
       .andExpect(status().isOk())
       .andExpect(content().contentType("text/plain;charset=UTF-8"))
       .andExpect(content().string("Welcome to Fructa"));
 	}
 	@Test
   public void login() throws Exception {
-    mock.perform(post("/api/login").content("{\"id\":\"player1\",\"password\":\"password\"}").contentType(MediaType.APPLICATION_JSON))
+    mock.perform(post("/login").content("{\"id\":\"player1\",\"password\":\"password\"}").contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
       .andExpect(content().string(""))
       .andExpect(header().string(HttpHeaders.AUTHORIZATION, notNullValue()));

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/spin")
+@RequestMapping("/spin")
 public class SpinController {
   @Autowired
   private SpinService service;

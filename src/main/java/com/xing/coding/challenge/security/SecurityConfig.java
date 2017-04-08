@@ -14,13 +14,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception{
     http.csrf().disable().authorizeRequests()
-      .antMatchers("/api").permitAll()
-      .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+      .antMatchers("/").permitAll()
+      .antMatchers(HttpMethod.POST, "/login").permitAll()
 //      .antMatchers("/api/admin/**").hasRole("ADMIN")
-      .antMatchers("/api/**").authenticated()
+      .antMatchers("/**").authenticated()
       .anyRequest().permitAll()
       .and()
-      .addFilterBefore(new JWTLoginFilter("/api/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+      .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
       .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
   }
   @Override

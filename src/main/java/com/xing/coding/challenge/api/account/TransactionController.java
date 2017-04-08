@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/account")
 public class TransactionController {
   @Autowired
   private TransactionService service;
