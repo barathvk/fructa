@@ -1,20 +1,22 @@
 language: java
 sudo: required
 services:
-  - docker
+- docker
 jdk:
-  - oraclejdk8
+- oraclejdk8
 script:
-  - mvn clean package -DskipTests
-  - docker build -t lennonsaves/fructa:latest .
+- mvn clean package -DskipTests
+- docker build -t lennonsaves/fructa:latest .
 after_success:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push lennonsaves/fructa:latest
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker push lennonsaves/fructa:latest
 deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-    - git remote add deploy ssh://git@fructa.ga/var/fructa.git
-    - git push deploy
+  provider: releases
+  api_key:
+    secure: vGuQZMFqlV5D+wZSvmjGVUckW0Ypl+bq3bbcBZXffIwjeW8nUcT8zZ/A/5aQs8a7e4+f1zQEpcko0YsCUYTZYm1uss8tgVPCURrN4Xf6mCAWHz3QOWnKrsTNvf/MLIK/iqLTwfh3w5Vv/9TtRh7mL9S1GutPbWNtptmyRhhCGB5rib+AwwDRwKYGvV5xRGt0pncFI8PHonKNrte0GCv80jipjUuXSjsManIXRd+ndwuPEl3xdSGk8vlyiDbCHi9EbdOCgkhGG0aKrc0iGnGUpjQbazdqYi9SwUUqAwIrpiNJaO/9IyHX+xX1TGQxjP7ZU4AWQ6Hz0Hx5dIxEhPdf3VHNcIJZObwCb8yItwkXjVGTiH7ftYKAyNg+vvX/mMVsa3w0zNMpwHoN1754i/0Igrk7fBbpUWdpx1I/nVhWZibuAYYuF/ADjjOZvGg2BMtuazyyB3wdf2Gvl8kCpJHuW5OjlG3JIOH5pXjQ+EdZWk9MkWE0+iUr+fbJr89ML2ULVv+xlTqYWBkvwuV3tu+PB65EId7o62s2WrCVV50AXWJBs7U322hCJcnbOLewh1Updzljqpt40MlpFRR12ynAWEoGaUBSg9LK6x2o30Z+goVLDzJhwtrveAxikeyARNSLswLtFHImGLWJl7LIzl59dLVXuIW1nEBxQIdcC+UISiw=
+  file: build/fructa.jar
+  on:
+    repo: barathvk/fructa
 before_install:
-  - openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv -in deploy_rsa.enc -out deploy_rsa -d
+- openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv
+  -in deploy_rsa.enc -out deploy_rsa -d
