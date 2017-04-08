@@ -33,6 +33,7 @@ prometheus:
     - traefik.port=9090
   volumes:
     - '/docker/prometheus/data:/prometheus'
+    - '/var/fructa/prometheus.yml:/etc/prometheus/prometheus.yml'
 tr-stats:
   command: '-traefik.address=http://traefik:8080/health'
   restart: always
