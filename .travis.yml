@@ -18,4 +18,4 @@ deploy:
     - git push deploy
 before_install:
   - openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv
-  -in deploy_rsa.enc -out deploy_rsa -d
+  - in deploy_rsa.enc -out deploy_rsa -d
