@@ -1,5 +1,12 @@
 version: '2'
 services:
+  fructa-ui:
+    image: 'lennonsaves/fructa-ui:latest'
+    container_name: ui
+    restart: always
+    labels:
+      - 'traefik.port=3000'
+      - 'traefik.frontend.rule=Host:fructa.ga'
   fructa-api:
     image: 'lennonsaves/fructa:latest'
     container_name: api
