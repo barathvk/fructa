@@ -4,13 +4,18 @@ services:
 - docker
 jdk:
 - oraclejdk8
+addons:
+  ssh_known_hosts: fructa.ga
 script:
-- mvn clean package -DskipTests
-- docker build -t lennonsaves/fructa:latest .
+  - mvn clean package -DskipTests
+  - docker build -t lennonsaves/fructa:latest .
 after_success:
-- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-- docker push lennonsaves/fructa:latest
-- ./deploy.sh
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push lennonsaves/fructa:latest
+  - "./deploy.sh"
 before_install:
-- openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv
-  -in deploy_rsa.enc -out deploy_rsa -d
+  - openssl aes-256-cbc -K $encrypted_1ef52a92cc44_key -iv $encrypted_1ef52a92cc44_iv -in deploy_rsa.enc -out deploy_rsa -d
+  - echo -e "Host fructa.ga\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/deploy_rsa
+  - ssh-add /tmp/deploy_rsa
